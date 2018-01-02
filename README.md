@@ -8,7 +8,7 @@ A basic example with a typeahead address input and automatic parsing of the resp
 
 Code Snippet:
 ```javascript
-$("#az-typeahead-address").accuzipTypeAhead({
+$("#input-address").accuzipTypeAhead({
 	apiKey: "YOUR-API-KEY"
 })
 ```

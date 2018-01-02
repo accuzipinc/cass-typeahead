@@ -1,0 +1,20 @@
+.az-suggestions { 
+    overflow: auto; 
+    border: 1px solid #CBD3DD; 
+    background: #FFF; 
+}
+
+.az-suggestions strong { 
+    color: #029cca; 
+    font-weight: normal; 
+}
+
+.az-suggestion { 
+    overflow: hidden; 
+    padding: 5px 15px; 
+    white-space: nowrap; 
+}
+
+.az-selected { 
+    background: #F0F0F0; 
+}

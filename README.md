@@ -1,6 +1,6 @@
 ## AccuZIP CASS Typeahead Samples
 
-Below is a list of sample implementations of our address typeahead component.  [jQuery] is the only external dependency.  To use this on your own site, contact sales@accuzip.com to get your own API Key.
+Below is a list of sample implementations of our address typeahead component.  [jQuery](http://jquery.com) is the only external dependency.  To use this on your own site, contact sales@accuzip.com to get your own API Key.
 
 ### Simple
 

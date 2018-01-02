@@ -16,27 +16,6 @@
 				$("#az-typeahead-address").accuzipTypeAhead({
 					apiKey: "B4600995-5991-47D3-AC44-F7C090CFAD7F"
 				})
-
-				function selectCallback(selection){
-					console.log(selection);
-					//optionally CASS the result to get the address parts
-					azTypeAhead.cass(selection.data.address_main, selection.data.address_secondary, selection.data.country, cassCallback);
-				}
-
-				function cassCallback(result){
-					console.log(result);
-					if(result.success){
-						var cassAddress = result.Addr_Result[0];
-						$("#az-typeahead-address").val(cassAddress.dadl1);
-						$("#az-typeahead-city").val(cassAddress.dctys);
-						$("#az-typeahead-state").val(cassAddress.dstaa);
-						$("#az-typeahead-zip").val(cassAddress.zipc);
-
-						$("#az-typeahead-address2").focus()
-					}
-				}
-
-			});
 		</script>
 	</head>
 

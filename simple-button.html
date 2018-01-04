@@ -23,12 +23,17 @@
 				*	 "data-shipping-state"
 				*	 "data-shipping-zip"
 				*/
-				$("#az-typeahead-address").accuzipTypeAhead({
+				var accuzipTypeAhead =  $("#az-typeahead-address").accuzipTypeAhead({
 					apiKey: "B4600995-5991-47D3-AC44-F7C090CFAD7F",
 					dataKey: "shipping",
-					autoCass: "address2"
+					autoCass: "off"
 				})
-			});
+
+				//CASS button click
+				$("#cass").click(function() {
+					accuzipTypeAhead.cass();
+				  });
+			});  
 		</script>
 	</head>
 
@@ -37,6 +42,7 @@
 		<input data-shipping-address2 type="text" placeholder="Apt, Suite, Unit, Building, Floor" size="53"><br/>
 		<input data-shipping-city type="text" placeholder="City" size="30"> 
 		<input data-shipping-state type="text" placeholder="ST" size="2">
-		<input data-shipping-zip type="text" placeholder="Zip" size="10"> 
+		<input data-shipping-zip type="text" placeholder="Zip" size="10"> <br/>
+		<input id="cass" type="button" value="CASS Validate"> 
 	</body>
 </html>

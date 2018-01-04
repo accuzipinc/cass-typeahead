@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>AccuZIP TypeAhead Example</title>
+
+		<link href="lib/css/typeAhead.css" rel="stylesheet" />
+
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+		<script src="lib/js/jquery.autocomplete.az.min.js"></script>
+		<script src="lib/js/accuzipTypeAhead.js"></script>
+		
+		<script>
+			$(document).ready(function() {
+				/*
+				* Change to your API Key.  The one below is for sample purposes only and has limited use.
+				* Your inputs should have properties in the format of "data-" + dataKey + "-" + inputType.  
+				* That allows you to have multiple AccuZIP Typeahead components on the same input form for billing/shipping/etc.
+				* Ex: if dataKey=shipping
+				*	 "data-shipping-address"
+				*	 "data-shipping-address2"
+				*	 "data-shipping-city"
+				*	 "data-shipping-state"
+				*	 "data-shipping-zip"
+				*/
+				$("#az-typeahead-address").accuzipTypeAhead({
+					apiKey: "B4600995-5991-47D3-AC44-F7C090CFAD7F",
+					dataKey: "shipping",
+					autoCass: true
+				})
+			});
+		</script>
+	</head>
+
+	<body>
+		<input data-shipping-address id="az-typeahead-address" autocomplete="off" type="text" placeholder="Street Address or P.O. Box" size="53"><br/>
+		<input data-shipping-address2 type="text" placeholder="Apt, Suite, Unit, Building, Floor" size="53"><br/>
+		<input data-shipping-city type="text" placeholder="City" size="30"> 
+		<input data-shipping-state type="text" placeholder="ST" size="2">
+		<input data-shipping-zip type="text" placeholder="Zip" size="10"> 
+	</body>
+</html>

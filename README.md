@@ -9,8 +9,25 @@ A basic example with a typeahead address input and automatic parsing of the resp
 Code Snippet:
 ```javascript
 $("#input-address").accuzipTypeAhead({
-	apiKey: "YOUR-API-KEY"
+	apiKey: "YOUR-API-KEY",
+	dataKey: "shipping"
 })
 ```
 
 [Full Example Demo](simple.html)
+
+
+### Simple with Auto CASS
+
+A basic example with a typeahead address input and automatic parsing of the response into their specific address input fields, with the addition of autoCass=true.  When autoCass is on, CASS will be performed more frequently (after the selection of an address, and after entering address2 information), using more API credits, but may provide for a more seamless user experience.  Without autoCass, CASS is only performed after leaving the address2 input.
+
+Code Snippet:
+```javascript
+$("#input-address").accuzipTypeAhead({
+	apiKey: "YOUR-API-KEY",
+	dataKey: "shipping",
+	autoCass: true
+})
+```
+
+[Full Example Demo](simple-autocass.html)

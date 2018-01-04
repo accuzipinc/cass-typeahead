@@ -47,4 +47,4 @@ $("#input-address").accuzipTypeAhead({
 })
 ```
 
-[Full Example Demo](simple-autocass.html)
+[Full Example Demo](simple-button.html)

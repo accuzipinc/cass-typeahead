@@ -1,10 +1,10 @@
 ## AccuZIP CASS Typeahead Samples
-Below is a list of sample implementations of our address typeahead component.  [jQuery](http://jquery.com) is the only external dependency.  To use this on your own site, contact sales@accuzip.com to get your own API Key.
+Below is a list of sample implementations of our address typeahead component.  [jQuery](http://jquery.com) and our [jQuery-Autocomplete fork](https://github.com/accuzipinc/jQuery-Autocomplete/blob/master/dist/jquery.autocomplete.az.min.js) the only external dependencies.  To use this on your own site, contact sales@accuzip.com to get your own API Key.
 
 
 ### Simple with Auto CASS on Address1
 
-A basic example with a typeahead address input and automatic parsing of the response into their specific address input fields, with the addition of autoCass=address2.  With this option, CASS will be performed more after entering address2 information.
+A basic example with a typeahead address input and automatic parsing of the response into their specific address input fields, with the addition of autoCass=address2.  With this option, CASS will be performed more after entering address2 information.  This options also shows all possible input fields for international addresses.
 
 Code Snippet:
 ```javascript

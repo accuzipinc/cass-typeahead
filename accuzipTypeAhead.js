@@ -23,7 +23,8 @@
         selectCallback: null,
         mixedCase: true,
         autoCass: "off",
-        dataKey: "accuzip"
+        dataKey: "accuzip",
+        countries: "us|pr|vi|gu|ca"
     };
 
     /*
@@ -52,7 +53,7 @@
         */
         var fetchResults = debounce(function(query, done){
             //You may also pass the IP Address of the user in the place of latitude and omit longitude and the service will determine their location
-            var url = that.baseURL + '/ws_autocomplete/' + that.options.apiKey + "/" + query;
+            var url = that.baseURL + '/ws_autocomplete/' + that.options.apiKey + "/" + query + "/" + that.options.countries;
             if(that.options.ip){
                 url += "/" + that.options.ip;
             }
@@ -80,23 +81,13 @@
             that.focusAddress2 = true;
             if(that.options.autoCass == "addresses"){
                 //Prepare the CASS request and run it
-                var address1 = selection.data.address_main;
-                var address2 = null; //address2 is only included after the user types it in
-                var city = selection.data.city;
-                var state = selection.data.state;
-                var zip =  null; //zip is only included after the user types it in
-                var country = selection.data.country;
-                if(!city && !state){
-                    address2 = selection.data.address_secondary;
-                    zip = "";
-                }
-                that.cass(address1, address2, city, state, zip, country, that.options.selectCallback);
+                that.address.loadFromSelection(selection);
+                that.cass(that.address, that.options.selectCallback);
             }
             else{
                 //Parse the typeahead results only
-                $('[data-' + that.options.dataKey + '-address]').val(selection.data.address_main);
-                $('[data-' + that.options.dataKey + '-city]').val(selection.data.city);
-                $('[data-' + that.options.dataKey + '-state]').val(selection.data.state);
+                that.address.loadFromSelection(selection);
+                that.address.setInputs();
                 if(that.focusAddress2){
                     $('[data-' + that.options.dataKey + '-address2]').focus();
                 }
@@ -112,25 +103,8 @@
             if(response.success && (response.Addr_Result[0].addon || response.Addr_Result[0].county_no)){
                 var cassAddress = response.Addr_Result[0];
     
-                var zip = cassAddress.zipc;
-                if(cassAddress.addon){
-                    zip += "-" + cassAddress.addon;
-                }
-                
-                var address1 = cassAddress.mpnum + 
-                                (cassAddress.pre_di ? " " + cassAddress.pre_di : "") +
-                                " " + cassAddress.str_name +
-                                (cassAddress.suffix ? " " + cassAddress.suffix : "") +
-                                (cassAddress.post_dir ? " " + cassAddress.post_dir : "");
-                var address2 = (cassAddress.unit ? cassAddress.unit : "") +
-                                (cassAddress.unit && cassAddress.msnum ? " " + cassAddress.msnum : 
-                                                    cassAddress.msnum ? cassAddress.msnum : "");
-    
-                $('[data-' + that.options.dataKey + '-address]').val(address1);
-                $('[data-' + that.options.dataKey + '-address2]').val(address2);
-                $('[data-' + that.options.dataKey + '-city]').val(cassAddress.dctys);
-                $('[data-' + that.options.dataKey + '-state]').val(cassAddress.dstaa);
-                $('[data-' + that.options.dataKey + '-zip]').val(zip);
+                that.address.loadFromCASS(cassAddress);
+                that.address.setInputs();
                 if(that.focusAddress2){
                     $('[data-' + that.options.dataKey + '-address2]').focus();
                 }
@@ -147,13 +121,9 @@
         */
         var address2Callback = debounce(function() {
             //Prepare the CASS request and run it
-            var address1 = $('[data-' + that.options.dataKey + '-address]').val();
-            var address2 = $('[data-' + that.options.dataKey + '-address2]').val();
-            var city = $('[data-' + that.options.dataKey + '-city]').val();
-            var state = $('[data-' + that.options.dataKey + '-state]').val();
-            var zip =  $('[data-' + that.options.dataKey + '-zip]').val();
+            that.address.loadFromInputs();
             that.focusAddress2 = false;
-            that.cass(address1, address2, city, state, zip, null, that.options.selectCallback);
+            that.cass(that.address, that.options.selectCallback);
         }, this.options.throttleMs);
 
         var address2Input = $('[data-' + this.options.dataKey + '-address2]');
@@ -183,6 +153,8 @@
             suggestionClass: 'az-suggestion',
             onSelect: selectCallbackAZ
         });
+
+        this.address = new AZAddress(this.options);
     };
 
 
@@ -194,41 +166,45 @@
     *  If passing all values, address_secondary is address2, like Unit or Apt info.
     *
     */
-    AZTypeAhead.prototype.cass = function(address_main, address_secondary, city, state, zip, country, cassCallback) {
+    AZTypeAhead.prototype.cass = function(AZAddress, cassCallback) {
         //Allow defaults to be derived
-        if(!address_main){
-            address_main = $('[data-' + this.options.dataKey + '-address]').val();
-            address_secondary = $('[data-' + this.options.dataKey + '-address2]').val();
-            city = $('[data-' + this.options.dataKey + '-city]').val();
-            state = $('[data-' + this.options.dataKey + '-state]').val();
-            zip =  $('[data-' + this.options.dataKey + '-zip]').val();
+        if(!AZAddress){
+            this.address.loadFromInputs();
+            AZAddress = this.address;
         }
 
         if(!cassCallback){
             cassCallback = this.options.selectCallback;
         }
 
-
         var requestJSON = {
             API_KEY: this.options.apiKey,
-            AZSetQuery_iadl1: address_main,
-            AZSetQuery_ictyi: address_secondary
+            AZSetQuery_iadl1: AZAddress.address1,
+            AZSetQuery_ictyi: AZAddress.address2
         }
 
-        if(city && state){
-            requestJSON.AZSetQuery_iadl1 = address_main + (address_secondary ? " " + address_secondary : "")
-            requestJSON.AZSetQuery_ictyi = city;
-            requestJSON.AZSetQuery_istai = state;
+        if(AZAddress.company){
+            requestJSON.AZSetQuery_iadl2 = AZAddress.company;
         }
 
-        if(zip){
-            requestJSON.AZSetQuery_izipc = zip;
+        if(AZAddress.city && AZAddress.state){
+            requestJSON.AZSetQuery_iadl1 = AZAddress.address1; //address_main + (address_secondary ? " " + address_secondary : "");
+            requestJSON.AZSetQuery_iadl3 = AZAddress.address2;
+            requestJSON.AZSetQuery_ictyi = AZAddress.city;
+            requestJSON.AZSetQuery_istai = AZAddress.state;
         }
 
-        if(country){
-            requestJSON.AZSetQuery_icountry = country;
+        if(AZAddress.zip){
+            requestJSON.AZSetQuery_izipc = AZAddress.zip;
         }
 
+        if(AZAddress.urban){
+            requestJSON.AZSetQuery_iprurb = AZAddress.urban;
+        }
+
+        if(AZAddress.country){
+            requestJSON.AZSetQuery_icountry = AZAddress.country;
+        }
 
         if(this.options.mixedCase){
             requestJSON.MIXEDCASE = "1";
@@ -245,6 +221,89 @@
             }
         });
     }
+
+
+    function AZAddress(options){
+        this.company = null;
+        this.address1 = null;
+        this.address2 = null;
+        this.city = null;
+        this.state = null;
+        this.zip = null;
+        this.urban = null;
+        this.country = null;
+        this.options = options;
+    }
+
+    AZAddress.prototype.loadFromInputs  = function(){
+        this.company = $('[data-' + this.options.dataKey + '-company]').length ? $('[data-' + this.options.dataKey + '-company]').val() : null;
+        this.address1 = $('[data-' + this.options.dataKey + '-address]').val();
+        this.address2 = $('[data-' + this.options.dataKey + '-address2]').val();
+        this.city = $('[data-' + this.options.dataKey + '-city]').val();
+        this.state = $('[data-' + this.options.dataKey + '-state]').val();
+        this.zip =  $('[data-' + this.options.dataKey + '-zip]').val();
+        this.urban = $('[data-' + this.options.dataKey + '-urban]').length ? $('[data-' + this.options.dataKey + '-urban]').val() : null;
+        this.country = $('[data-' + this.options.dataKey + '-country]').length ? $('[data-' + this.options.dataKey + '-country]').val() : null;
+    }
+
+    AZAddress.prototype.loadFromSelection  = function(selection){
+        //refresh from input data first
+        this.loadFromInputs()
+
+        this.address1 = selection.data.address_main;
+        this.address2 = null; //address2 is only included after the user types it in
+        this.city = selection.data.city;
+        this.state = selection.data.state;
+        this.zip =  null; //zip is only included after the user types it in
+        this.country = selection.data.country;
+        if(this.city && !this.state){
+            this.address2 = selection.data.address_secondary;
+            this.zip = "";
+        }
+    }
+
+    AZAddress.prototype.loadFromCASS  = function(cassAddress){
+        
+        this.address1 = cassAddress.mpnum + 
+                        (cassAddress.pre_di ? " " + cassAddress.pre_di : "") +
+                        " " + cassAddress.str_name +
+                        (cassAddress.suffix ? " " + cassAddress.suffix : "") +
+                        (cassAddress.post_dir ? " " + cassAddress.post_dir : "");
+        this.address2 = (cassAddress.unit ? cassAddress.unit : "") +
+                        (cassAddress.unit && cassAddress.msnum ? " " + cassAddress.msnum : 
+                                            cassAddress.msnum ? cassAddress.msnum : "");
+
+        this.city = cassAddress.dctys;
+        this.state = cassAddress.dstaa;
+
+        this.zip = cassAddress.zipc;
+        if(cassAddress.addon){
+            this.zip += "-" + cassAddress.addon;
+        }
+
+        if(cassAddress.dprurb){
+            this.urban = cassAddress.dprurb;
+        }
+        
+        if(cassAddress.dadl2){
+            this.company = cassAddress.dadl2;
+        }
+    }
+
+    AZAddress.prototype.setInputs  = function(){
+        if($('[data-' + this.options.dataKey + '-company]').length)
+            $('[data-' + this.options.dataKey + '-company]').val(this.company);
+         $('[data-' + this.options.dataKey + '-address]').val(this.address1);
+         $('[data-' + this.options.dataKey + '-address2]').val(this.address2);
+         $('[data-' + this.options.dataKey + '-city]').val(this.city);
+         $('[data-' + this.options.dataKey + '-state]').val(this.state);
+         $('[data-' + this.options.dataKey + '-zip]').val(this.zip);
+         if($('[data-' + this.options.dataKey + '-urban]').length)
+            $('[data-' + this.options.dataKey + '-urban]').val(this.urban);
+         if($('[data-' + this.options.dataKey + '-country]').length)
+            $('[data-' + this.options.dataKey + '-country]').val(this.country);
+    }
+    
 
     $.fn.accuzipTypeAhead = function(options) {
         var dataKey = 'accuzipTypeAhead';

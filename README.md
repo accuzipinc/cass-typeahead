@@ -18,3 +18,4 @@ $("#input-address").accuzipTypeAhead(options)
 | `latitude` | `null` | if `geoBias` is true, you may optinoally pass in the latitude to be used for the geographical biases |
 | `longitude` | `null` | if `geoBias` is true, you may optinoally pass in the longitude to be used for the geographical biases |
 | `throttleMs` | `300` | The number of milliseconds to throttle the typeahead results.  Prevents from calling too often if the user is a fast typer |
+| `countries` | `300` | Countries to use for typeahead results.  Values should be pipe separated.  Defaults to `us|pr|vi|gu|ca` |

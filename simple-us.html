@@ -26,20 +26,18 @@
 				$("#az-typeahead-address").accuzipTypeAhead({
 					apiKey: "B4600995-5991-47D3-AC44-F7C090CFAD7F",
 					dataKey: "shipping",
-					autoCass: "address2"
+					autoCass: "address2",
+					countries: "us"
 				})
 			});
 		</script>
 	</head>
 
 	<body>
-		<input data-shipping-company type="text" placeholder="Company" size="53"><br/>
 		<input data-shipping-address id="az-typeahead-address" autocomplete="off" type="text" placeholder="Street Address or P.O. Box" size="53"><br/>
 		<input data-shipping-address2 type="text" placeholder="Apt, Suite, Unit, Building, Floor" size="53"><br/>
 		<input data-shipping-city type="text" placeholder="City" size="30"> 
 		<input data-shipping-state type="text" placeholder="ST" size="2">
-		<input data-shipping-zip type="text" placeholder="Zip" size="10"><br/>
-		<input data-shipping-urban type="text" placeholder="Urban" size="53"><br/>
-		<input data-shipping-country type="text" placeholder="Country" size="53"><br/>
+		<input data-shipping-zip type="text" placeholder="Zip" size="10"> 
 	</body>
 </html>

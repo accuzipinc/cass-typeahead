@@ -2,7 +2,7 @@
     'use strict';
 
     function AZTypeAhead(el, clientOptions){
-        this.baseURL = 'https://template.cassonline.com/servoy-service/rest_ws/ws_address';
+        this.baseURL = 'https://api.cassonline.com/servoy-service/rest_ws/ws_address';
         this.options = $.extend({}, AZTypeAhead.defaults, clientOptions);
         this.element = el;
         this.el = $(el);

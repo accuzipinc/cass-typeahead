@@ -264,14 +264,8 @@
 
     AZAddress.prototype.loadFromCASS  = function(cassAddress){
         
-        this.address1 = cassAddress.mpnum + 
-                        (cassAddress.pre_di ? " " + cassAddress.pre_di : "") +
-                        " " + cassAddress.str_name +
-                        (cassAddress.suffix ? " " + cassAddress.suffix : "") +
-                        (cassAddress.post_dir ? " " + cassAddress.post_dir : "");
-        this.address2 = (cassAddress.unit ? cassAddress.unit : "") +
-                        (cassAddress.unit && cassAddress.msnum ? " " + cassAddress.msnum : 
-                                            cassAddress.msnum ? cassAddress.msnum : "");
+        this.address1 = cassAddress.dadl1;
+        this.address2 = cassAddress.dadl3;
 
         this.city = cassAddress.dctys;
         this.state = cassAddress.dstaa;
@@ -281,13 +275,9 @@
             this.zip += "-" + cassAddress.addon;
         }
 
-        if(cassAddress.dprurb){
-            this.urban = cassAddress.dprurb;
-        }
+        this.urban = cassAddress.dprurb;
         
-        if(cassAddress.dadl2){
-            this.company = cassAddress.dadl2;
-        }
+        this.company = cassAddress.dadl2;
     }
 
     AZAddress.prototype.setInputs  = function(){

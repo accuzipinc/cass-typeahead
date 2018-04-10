@@ -21,6 +21,7 @@
         throttleMs: 300,
         geoBias: true,
         selectCallback: null,
+        triggerChangeOnCallback: null,
         mixedCase: true,
         autoCass: "off",
         dataKey: "accuzip",
@@ -281,18 +282,39 @@
     }
 
     AZAddress.prototype.setInputs  = function(){
-        if($('[data-' + this.options.dataKey + '-company]').length)
+        var doTrigger = this.options.triggerChangeOnCallback;
+        if($('[data-' + this.options.dataKey + '-company]').length){
             $('[data-' + this.options.dataKey + '-company]').val(this.company);
+            if(doTrigger)
+               $('[data-' + this.options.dataKey + '-company]').trigger('change');
+        }
          $('[data-' + this.options.dataKey + '-address]').val(this.address1);
-        if($('[data-' + this.options.dataKey + '-address2]').length)
+         if(doTrigger)
+             $('[data-' + this.options.dataKey + '-address]').trigger('change');
+        if($('[data-' + this.options.dataKey + '-address2]').length){
             $('[data-' + this.options.dataKey + '-address2]').val(this.address2);
+            if(doTrigger)
+               $('[data-' + this.options.dataKey + '-address2]').trigger('change');
+        }
          $('[data-' + this.options.dataKey + '-city]').val(this.city);
+         if(doTrigger)
+             $('[data-' + this.options.dataKey + '-city]').trigger('change');
          $('[data-' + this.options.dataKey + '-state]').val(this.state);
+         if(doTrigger)
+             $('[data-' + this.options.dataKey + '-state]').trigger('change');
          $('[data-' + this.options.dataKey + '-zip]').val(this.zip);
-         if($('[data-' + this.options.dataKey + '-urban]').length)
+         if(doTrigger)
+             $('[data-' + this.options.dataKey + '-zip]').trigger('change');
+         if($('[data-' + this.options.dataKey + '-urban]').length){
             $('[data-' + this.options.dataKey + '-urban]').val(this.urban);
-         if($('[data-' + this.options.dataKey + '-country]').length)
+             if(doTrigger)
+               $('[data-' + this.options.dataKey + '-urban]').trigger('change');
+         }
+         if($('[data-' + this.options.dataKey + '-country]').length){
             $('[data-' + this.options.dataKey + '-country]').val(this.country);
+             if(doTrigger)
+               $('[data-' + this.options.dataKey + '-country]').trigger('change');
+         }
     }
     
 

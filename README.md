@@ -1,6 +1,8 @@
 # AccuZIP CASS Typeahead
 See [https://accuzipinc.github.io/cass-typeahead/](https://accuzipinc.github.io/cass-typeahead/) for example usage.
 
+If you would prefer to build your own front-end component and just use our backend API calls, the documentation for that is available in our [Postman Documentation](https://documenter.getpostman.com/view/265468/RWMFrnop)
+
 Code Snippet:
 ```javascript
 $("#input-address").accuzipTypeAhead(options)

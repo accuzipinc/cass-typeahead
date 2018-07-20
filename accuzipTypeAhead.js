@@ -137,7 +137,7 @@
         * Get the users general location info for geographical biases on results.
         */
         if(this.options.geoBias && !this.options.ip){
-            $.get('https://api.ipdata.co/?api-key=64f60f4dcf6c5560303eb4ab8a678050f2db6e3bb4dcde833c364f60', function(response) {
+            $.get('https://api.cassonline.com/rest_ws/location/?API_KEY' + that.options.apiKey, function(response) {
                 if(response && response.latitude && response.longitude){
                     that.options.latitude = response.latitude;
                     that.options.longitude = response.longitude;

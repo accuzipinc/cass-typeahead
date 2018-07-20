@@ -1,6 +1,8 @@
 ## AccuZIP CASS Typeahead Samples
 Below is a list of sample implementations of our address typeahead component.  [jQuery](http://jquery.com) and our [jQuery-Autocomplete fork](https://github.com/accuzipinc/jQuery-Autocomplete/blob/master/dist/jquery.autocomplete.az.min.js) the only external dependencies.  To use this on your own site, contact sales@accuzip.com to get your own API Key.
 
+If you would prefer to build your own front-end component and just use our backend API calls, the documentation for that is available in our [Postman Documentation](https://documenter.getpostman.com/view/265468/RWMFrnop)
+
 ### Sample with Auto CASS off
 
 A basic example with a typeahead address input and automatic parsing of the response into their specific address input fields, without autoCass. The user can click the CASS Validate button to perform the CASS.

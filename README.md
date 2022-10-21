@@ -3,7 +3,7 @@ Below is a list of sample implementations of our address typeahead component.  [
 
 If you would prefer to build your own front-end component and just use our backend API calls, the documentation for that is available in our [Postman Documentation](https://documenter.getpostman.com/view/265468/RWMFrnop)
 
-The three examples below show the different options for using autoCass: off will disable it and you'll need to call CASS on your own. addresses will CASS automatically after selecting a value from Address1, or leaving the Address2 input. address2 will CASS automatically only after leaving the Address2 input
+The three examples below show the different options for using autoCass: **off** will disable it and you'll need to call CASS on your own. **addresses** will CASS automatically after selecting a value from Address1, or leaving the Address2 input. **address2** will CASS automatically only after leaving the Address2 input
 
 ### Sample with Auto CASS off
 

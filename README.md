@@ -3,6 +3,8 @@ Below is a list of sample implementations of our address typeahead component.  [
 
 If you would prefer to build your own front-end component and just use our backend API calls, the documentation for that is available in our [Postman Documentation](https://documenter.getpostman.com/view/265468/RWMFrnop)
 
+The three examples below show the different options for using autoCass: off will disable it and you'll need to call CASS on your own. addresses will CASS automatically after selecting a value from Address1, or leaving the Address2 input. address2 will CASS automatically only after leaving the Address2 input
+
 ### Sample with Auto CASS off
 
 A basic example with a typeahead address input and automatic parsing of the response into their specific address input fields, without autoCass. The user can click the CASS Validate button to perform the CASS.
@@ -19,9 +21,9 @@ $("#input-address").accuzipTypeAhead({
 [Full Example Demo](simple-button.html)
 
 
-### Sample with Auto CASS on Address1
+### Sample with Auto CASS on Address2
 
-A basic example with a typeahead address input and automatic parsing of the response into their specific address input fields, with the addition of autoCass=address2.  With this option, CASS will be performed more after entering address2 information.  This options also shows all possible input fields for international addresses.
+A basic example with a typeahead address input and automatic parsing of the response into their specific address input fields, with the addition of autoCass=address2.  With this option, CASS will be performed only after entering address2 information.  This options also shows all possible input fields for international addresses.
 
 Code Snippet:
 ```javascript
